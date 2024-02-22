@@ -1,4 +1,5 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -9,6 +10,7 @@ const Home = () => {
       {/* 로그인 여부에 따라 조건부 렌더링 */}
       <p>안녕하세요, 홍길동님!</p>
       <p>로그인을 해주세요.</p>
+      <Outlet />
     </div>
   );
 };

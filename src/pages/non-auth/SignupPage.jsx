@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "../../axios/auth";
+import { sineUp } from "../../axios/auth";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -8,6 +9,7 @@ const SignupPage = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
+  // console.log(id);
 
   return (
     <div>
@@ -17,20 +19,51 @@ const SignupPage = () => {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
+          const response = await sineUp(id, password, nickname);
+          try {
+            const { success } = response.data;
+            if (success) {
+              alert("회원가입 성공 로그인 하셈");
+              navigate("/login");
+            } else {
+              alert("회원가입 실패");
+              return;
+            }
+          } catch (error) {
+            return;
+          }
         }}
       >
         <div>
           <label htmlFor="id">id</label>
-          <input />
+          <input
+            type="text"
+            value={id}
+            onChange={(e) => {
+              setId(e.target.value);
+            }}
+          />
         </div>
         <div>
           <label htmlFor="nickname">nickname</label>
-          <input />
+          <input
+            type="text"
+            value={nickname}
+            onChange={(e) => {
+              setNickname(e.target.value);
+            }}
+          />
         </div>
 
         <div>
           <label htmlFor="password">Password</label>
-          <input />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
         </div>
 
         <button type="submit">Signup</button>

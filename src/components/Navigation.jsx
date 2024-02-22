@@ -4,11 +4,35 @@ import { Link, useNavigate } from "react-router-dom";
 const Navigation = () => {
   const navigate = useNavigate();
 
+  const token = localStorage.getItem("accessToken");
+  console.log(token);
+
+  const handleLogout = () => {
+    if (token) {
+      localStorage.clear();
+      alert("정상적으로 로그아웃 되었습니다. 다시 로그인해주세요.");
+    } else {
+      return;
+    }
+  };
+
+  const handleLogin = () => {
+    if (!token) {
+      navigate("/login");
+    } else {
+      alert("이미 로그인중입니다.");
+      navigate("/");
+      return;
+    }
+  };
+
   return (
     <nav>
-      {/* 로그인 또는 로그아웃 버튼 */}
-      <button>로그아웃</button>
-      <button>로그인하러가기</button>
+      {token ? (
+        <button onClick={handleLogout}>로그아웃</button>
+      ) : (
+        <button onClick={handleLogin}>로그인하러가기</button>
+      )}
 
       <ul
         style={{

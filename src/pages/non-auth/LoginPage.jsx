@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "../../axios/auth";
+import { login } from "../../axios/auth";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -13,15 +14,44 @@ const LoginPage = () => {
       <h1>Login</h1>
       <p>Login page</p>
 
-      <form onSubmit={async (e) => {}}>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const response = await login(id, password);
+          try {
+            const { accessToken, userId, nickname } = response.data;
+            if (accessToken) {
+              alert("로그인 성공! 메인페이지로 이동합니다.");
+              localStorage.setItem("accessToken", accessToken);
+              localStorage.setItem("avatar", userId);
+              localStorage.setItem("nickname", nickname);
+              navigate("/");
+            }
+          } catch (error) {
+            return;
+          }
+        }}
+      >
         <div>
           <label htmlFor="id">id</label>
-          <input />
+          <input
+            type="text"
+            value={id}
+            onChange={(e) => {
+              setId(e.target.value);
+            }}
+          />
         </div>
 
         <div>
           <label htmlFor="password">Password</label>
-          <input />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
         </div>
 
         <button type="submit">Login</button>
